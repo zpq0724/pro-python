@@ -1,6 +1,7 @@
+# coding=utf-8
 from datetime import datetime
 # playsound 库可以播放 mp3 格式音乐;
-from playsound import  playsound
+from playsound import playsound
 
 alarm_time = input('请输入闹钟时间， 示例：09:50:00 am\n')
 
@@ -21,7 +22,7 @@ while True:
     current_seconds = now.strftime("%S")
     current_period = now.strftime("%p")
 
-    #时间判断
+    # 时间判断
     if alarm_period == current_period:
         if alarm_hour == current_hour:
             if alarm_minut == current_minute:
