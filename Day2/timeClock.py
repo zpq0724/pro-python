@@ -1,7 +1,8 @@
 # coding=utf-8
+
 from datetime import datetime
 # playsound 库可以播放 mp3 格式音乐;
-from playsound import playsound
+# from playsound import playsound
 
 alarm_time = input('请输入闹钟时间， 示例：09:50:00 am\n')
 
