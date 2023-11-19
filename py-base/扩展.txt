@@ -1,0 +1,16 @@
+1. 进程与线程的区别：
+  https://blog.csdn.net/xiaoyubuhuiqiche/article/details/129629234
+
+
+
+ues 问题：
+  0. django - outreach 分析！
+  1. models.py 中的 字段是自己手动添加的？
+  2. sql 中的建表语句是自己写？包含 alert 等？
+
+  ***3. 我本地没有安装数据库，怎么使用？ ues 是如何使用的？具体是如何工作的？
+  
+  4. webapp 中的 urls.py
+    re_path(r'^', include('common_models.urls')),
+    re_path(r'^', include('homepage.urls')),
+      匹配路由文件耗时？ 匹配到各自的子路由文件？
