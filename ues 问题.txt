@@ -1,0 +1,17 @@
+ues 问题：
+  0. django - outreach 分析！
+
+  1. models.py 中的 字段是自己手动添加的？
+
+  2. sql 中的建表语句是自己写？包含 alert 等？
+
+  3. 我本地没有安装数据库，怎么使用？ ues 是如何使用的？具体是如何工作的？
+  
+  4. webapp 中的 urls.py
+    re_path(r'^', include('common_models.urls')),
+    re_path(r'^', include('homepage.urls')),
+      匹配路由文件耗时？ 匹配到各自的子路由文件？
+
+  5. logger.debug 日志无刷新，查看 ues.conf 中 LOGGER_LEVER 是否为 true;
+
+  6. flask_app 中的代码部署后，重启 rest 进程
