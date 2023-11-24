@@ -8,6 +8,8 @@
 
   4. restart agennt_task  重启定时任务
 
+  5. 多看看 apt_connection.py 文件，在 aptService
+
 
 
 
