@@ -1,17 +1,99 @@
+注意:
+  1. sql 文件中新的建表语句，推到远程是不执行的。
+      解决办法是将建表语句在 数据库软件中执行下，生成需要的表。
+
+  2. logger.debug 日志无刷新，查看 ues.conf 中 LOGGER_LEVER 是否为 true;
+
+  3. flask_app 中的代码部署后，重启 rest 进程；
+
+  4. restart agennt_task  重启定时任务
+
+
+
+
 ues 问题：
   0. django - outreach 分析！
-
+ 
   1. models.py 中的 字段是自己手动添加的？
 
   2. sql 中的建表语句是自己写？包含 alert 等？
 
   3. 我本地没有安装数据库，怎么使用？ ues 是如何使用的？具体是如何工作的？
+
+  4. 使用的数据库是？如何使用连接的？ pgsqldao.py 文件的作用? 
   
   4. webapp 中的 urls.py
     re_path(r'^', include('common_models.urls')),
     re_path(r'^', include('homepage.urls')),
-      匹配路由文件耗时？ 匹配到各自的子路由文件？
+      匹配路由文件？ 匹配到各自的子路由文件？
 
-  5. logger.debug 日志无刷新，查看 ues.conf 中 LOGGER_LEVER 是否为 true;
+  5. 下面这段代码的作用：
+    if __name__ == '__main__':
+      update_event(COLLECTIONS_NAME)
+      update_event_whitelist()
 
-  6. flask_app 中的代码部署后，重启 rest 进程
+  6. sql 已经创建完表了，为什么还要在 TblMhp.py 中下下面的代码？
+        class TblLogPolicyTemplate(TblObject):
+          __tablename__ = 'log_policy_template'
+          __table_args__ = ({"schema": "internal_app_uem"})
+          id = Column(Integer, primary_key=True, nullable=False)
+          template_name = Column(VARCHAR, nullable=False)
+          type = Column(VARCHAR, nullable=False)
+          collect_item = Column(JSONB, nullable=True)
+          create_time = Column(TIMESTAMP, default=datetime.datetime.now())
+          update_time = Column(TIMESTAMP, default=datetime.datetime.now())
+
+          @staticmethod
+          def insert(log_template_data):
+              pgsql = PgSqlDAO()
+              ses = pgsql.session
+
+              try:
+                  if not isinstance(log_template_data, dict):
+                      raise Exception("the input parameter type is invalid")
+
+                  obj = TblLogPolicyTemplate(
+                      template_name=log_template_data.get("template_name"),
+                      type=log_template_data.get("type"),
+                      collect_item=log_template_data.get("collect_item"),
+                  )
+                  ses.add(obj)
+                  ses.commit()
+              except Exception as e:
+                  mhploger.exception(traceback.format_exc())
+              finally:
+                  ses.close()
+
+    答案6：
+      上述代码定义了一个名为 TblLogPolicyTemplate 的类，该类继承自 TblObject。下面是对类中各部分的解释：
+
+      __tablename__：指定数据库表名为 'log_policy_template'。
+      __table_args__：指定数据库模式为 'internal_app_uem'。这个参数用于提供附加的表级别配置。
+      id、template_name、type、collect_item、create_time 和 update_time 是类的属性，对应数据库表中的列。
+      它们使用 SQLAlchemy 的 Column 类定义，并指定了相应的数据类型和约束。
+      insert 方法是一个静态方法，用于在数据库表中插入数据。在方法内部，创建了 PgSqlDAO 的实例对象，并调用其 session 方法获取会话对象 ses。
+      在 try 块内部，通过传入的 log_template_data 字典创建了一个 TblLogPolicyTemplate 对象，并将其添加到会话对象中（ses.add(obj)）。然后使用 ses.commit() 提交事务，将数据写入数据库。
+      如果在插入过程中出现异常，except 块会捕获并记录异常信息。这里使用了 mhploger 记录器来记录异常。
+      注意，异常信息是通过 traceback.format_exc() 获取的完整堆栈跟踪。
+      无论是否发生异常，finally 块中的 ses.close() 语句会关闭会话对象，释放数据库连接和资源。
+      综合起来，上述代码的作用是定义了一个名为 TblLogPolicyTemplate 的类，用于操作 'log_policy_template' 表。
+      它包括数据插入功能，并使用 PgSqlDAO 类来获取数据库会话对象并处理异常、最终关闭会话。
+
+    问题6 中的 TblObject 类：
+      TblObject = declarative_base()
+        TblObject = declarative_base() 是使用 SQLAlchemy 提供的 declarative_base() 函数创建了一个基类 TblObject。
+        这个基类用于定义数据库模型类，以便可以通过继承它来创建具体的数据模型类。
+
+        declarative_base() 函数返回一个基类对象，基于该基类对象，可以定义数据库表对应的模型类。
+        在这个模型类中，可以使用 SQLAlchemy 提供的一些特殊类型和属性来描述数据库表的结构和约束，并实现与数据库的交互操作。
+
+        通过继承 TblObject 基类，可以在子类中定义具体的数据库表模型，包括表名、列名、关系等信息。
+        子类继承了基类的一些方法和属性，使得实例化后的子类对象能够直接与数据库进行交互。
+
+        综合起来，TblObject = declarative_base() 的作用是创建一个基类对象 TblObject，用于定义数据库模型类，以便能够更方便地进行数据库操作和查询。
+        请注意，这里使用的是 SQLAlchemy 提供的 ORM（对象关系映射）功能来处理数据库操作。
+
+
+  7. 在 falsk 下的代码中对数据库操作后，有 ses.close()。
+     为什么在 django_app 的代码中没有看到 ？？？
+ 
