@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
-
 name = "zpq"
 age = "18"
 #  3.6 及以上版本支持 f-string 来格式化字符串
