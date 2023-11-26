@@ -20,11 +20,11 @@ def write_file():
 
   like_num = input('请输入您喜欢的数字：')
 
-  with open('D:\zpq-private-space\pro-python\Day3\json_api-test.json','w') as fw:
+  with open('D:\Coding\A-zpq-project-space\Back-end\python\py-base\Day3 py读取本地文件\json_api-test.json','w') as fw:
 
     json.dump(like_num,fw) # 将内容写入文件
 
-  with open('D:\zpq-private-space\pro-python\Day3\json_api-test.json','r') as fr:
+  with open('D:\Coding\A-zpq-project-space\Back-end\python\py-base\Day3 py读取本地文件\json_api-test.json','r') as fr:
 
     data = json.load(fr) # 读取文件内容
 

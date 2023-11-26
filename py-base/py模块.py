@@ -15,8 +15,6 @@ import traceback
 '''
 
 
-
-
 '''
   测试代码
 '''
@@ -29,3 +27,23 @@ data = dict()
 data['page'] = 1
 print(data)
 
+
+
+path = 'D:\Coding\A-zpq-project-space\Back-end\python\py-base\Day3 py读取本地文件\json_api-test.json'
+try:
+    fi = open()
+    try:
+        fi.read()
+    finally:
+        fi.close()
+        print("最后都会执行")
+except FileNotFoundError as e:
+    print(f"找不到相应的文件: {e}")
+except IOError as e:
+    print(f"文件操作失败IOError: {e}")
+except Exception as e:
+    # 可对比下面两行的输出区别
+    # print(f"发生其他异常: {traceback.format_exc()}")
+     print(f"发生其他异常: {e}")
+finally:
+    print("最后会执行finally")
