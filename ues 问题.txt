@@ -2,13 +2,22 @@
   1. sql 文件中新的建表语句，推到远程是不执行的。
       解决办法是将建表语句在 数据库软件中执行下，生成需要的表。
 
-  2. logger.debug 日志无刷新，查看 ues.conf 中 LOGGER_LEVER 是否为 true;
+  2. logger.debug 日志无刷新，查看 ues.conf 中 LOGGER_LEVER 是否为 DEBUG;
 
   3. flask_app 中的代码部署后，重启 rest 进程；
 
-  4. restart agennt_task  重启定时任务
+  4. restart agent_task  重启定时任务
 
-  5. 多看看 apt_connection.py 文件，在 aptService
+  5. 看看 apt_connection.py 文件，在 aptService
+
+  6. logger 打印：
+      1. 
+        logger.debug("推送内容----------------------")
+        logger.debug(post_json)
+
+      2. 
+        logger.debug("agent_host: %s" % agent_host)
+        logger.debug("agent_info: %s" % agent_info)
 
 
 
